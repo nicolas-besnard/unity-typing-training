@@ -9,7 +9,6 @@ public class ScriptPlayer : MonoBehaviour
 	
 	GameObject 				currentTarget = null;
 	string 					unConsumedChar = "";
-	bool 					CanHitAnOtherEnemy = true;
 	
 	// Use this for initialization
 	void 					Start () 
@@ -17,14 +16,6 @@ public class ScriptPlayer : MonoBehaviour
 	
 	}
 		
-	void aze () 
-	{
-		Vector3 mouse_pos = Camera.main.WorldToScreenPoint(currentTarget.transform.position);
-		Vector3 object_pos = Camera.main.WorldToScreenPoint(transform.position);
-		float angle = Mathf.Atan2(mouse_pos.y - object_pos.y, mouse_pos.x - object_pos.x) * Mathf.Rad2Deg;
-		transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
-	}
-	
 	void					Update () 
 	{
 		foreach (char c in Input.inputString) 
@@ -37,7 +28,7 @@ public class ScriptPlayer : MonoBehaviour
 		int currentChar = getNextChar();
 		
 		// No actual target
-		if (currentTarget == null || CanHitAnOtherEnemy)
+		if (currentTarget == null)
 		{
 			// There's a target with for current char
 			if (anEnemyHasChar((char)(currentChar)))
@@ -56,7 +47,6 @@ public class ScriptPlayer : MonoBehaviour
 					{
 						nearestDistance = distancePlayerEnemy;
 						nearestEnemy = enemy;						
-						CanHitAnOtherEnemy = false;
 					}
 				}
 				if (nearestEnemy)
@@ -69,18 +59,15 @@ public class ScriptPlayer : MonoBehaviour
 					transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle + 90));
 				}
 			}
-			else
-			{
-				Debug.Log("No");
-			}
 		}
 		
 		if (currentTarget)
 		{	
 			// current target has char
-			if (currentTarget.GetComponent<ScriptEnemy>().hasChar((char)(currentChar)))
+			if (currentTarget.GetComponent<ScriptEnemy>().firstCharIs((char)(currentChar)))
 			{
 				shoot ();
+				currentTarget.GetComponent<ScriptEnemy>().deleteCurrentChar();
 			}
 		}
 	}
@@ -103,16 +90,12 @@ public class ScriptPlayer : MonoBehaviour
 	{
 		currentTarget = null;
 	}
-	
-	public void				canHitAnOtherEnemy()
-	{
-		CanHitAnOtherEnemy = true;
-	}
+		
 	
 	/*
 	 * Check whether an enemy has a specific char
 	 * 
-	 * @params	char c	char to check
+	 * @param	char c	char to check
 	 * @return	bool
 	 */
 	
@@ -131,6 +114,13 @@ public class ScriptPlayer : MonoBehaviour
 	}
 	
 	
+	/*
+	 * List all enemy who has a specific char
+	 *
+	 * @param	char c	char to check
+	 * @return	ArrayList
+	 */
+	
 	ArrayList				getEnemyWithChar(char c)
 	{
 		ArrayList			ret = new ArrayList();
@@ -145,6 +135,7 @@ public class ScriptPlayer : MonoBehaviour
 		}
 		return ret;
 	}
+	
 	
 	/*
 	 * Get the next un-consumed char
