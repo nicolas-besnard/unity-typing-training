@@ -8,7 +8,7 @@ public class ScriptMissile : MonoBehaviour
 	public float			totalDistance;
 	
 	float					distanceTraveled = 0.0f;
-	float					speed = 30.0f;
+	float					speed = 50.0f;
 	
 	// Use this for initialization
 	void Start () 

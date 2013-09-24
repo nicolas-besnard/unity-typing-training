@@ -51,6 +51,7 @@ public class ScriptPlayer : MonoBehaviour
 				}
 				if (nearestEnemy)
 				{
+					Debug.Log ("ici");
 					currentTarget = nearestEnemy;
 					currentTarget.GetComponent<ScriptEnemy>().textBox.color = Color.red;
 					Vector3 mouse_pos = Camera.main.WorldToScreenPoint(currentTarget.transform.position);

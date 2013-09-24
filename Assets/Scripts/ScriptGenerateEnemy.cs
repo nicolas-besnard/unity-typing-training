@@ -7,7 +7,7 @@ public class ScriptGenerateEnemy : MonoBehaviour
 	public GameObject				enemyPrefab;
 	
 	float							timer = .0f;
-	float							timerTotal = 1.0f;
+	float							timerTotal = 2.0f;
 	float							totalEnemy = 100;
 	int								enemyCount = 0;
 	WordsManager					wordsManager;
@@ -16,10 +16,6 @@ public class ScriptGenerateEnemy : MonoBehaviour
 	void 							Start () 
 	{
 		wordsManager = GameObject.Find("_GameManager").GetComponent<WordsManager>();
-		if (wordsManager)
-		{
-			Debug.Log (wordsManager.getRandomWord());	
-		}
 	}
 	
 	// Update is called once per frame
